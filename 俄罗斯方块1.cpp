@@ -1,4 +1,5 @@
-#include "Tetris.h"
+#include "Tetris.hpp"
+#include "Block.hpp"
 
 
 int main()

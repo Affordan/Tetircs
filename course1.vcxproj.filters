@@ -20,7 +20,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Tetris.h">
+    <ClInclude Include="Tetris.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
