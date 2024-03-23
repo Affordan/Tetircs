@@ -7,8 +7,8 @@
 #include <random>
 #include <time.h>
 
-#define block_width width/50
-#define block_height height/36
+#define block_width width/40
+#define block_height height/40
 #define HONEY RGB(240,255,240)
 #define Lavender RGB(255,240,245)
 #define Azure RGB(240,255,255)
@@ -19,8 +19,12 @@
 
 using namespace std;
 
-const int width = 1200;
-const int height = 742;
+const int width = 800;
+const int height = 800;
+
+
+
+
 struct Point 
 {
 	int x;
@@ -31,13 +35,18 @@ class Block
 {
 private:
 	int blockType;
-	
+
+	//点的相对坐标?实际坐标？
+	Point blockLocation[4];
 	IMAGE* img;
 	static IMAGE* imgs[7];
 
 public:
 	Block();
 	~Block();
+	void draw(int ,int);
+	int getBlockType();
+	IMAGE* getImages();
 
 };
 
@@ -68,4 +77,48 @@ Block::Block()
 		
 	}
 
+	//相对坐标表示法
+	int blocks[7][4] = {
+	 1,3,5,7, // 长条
+	 2,4,5,7, // Z 1型
+	 3,5,4,6, // Z 2型
+	 3,5,4,7, // 小T
+	 2,3,5,7, // 左手折角
+	 3,5,7,6, // 右手折角
+	 2,3,4,5, // 愤怒男孩
+	};
+	blockType = rand() % 7 + 1;
+	for (int i = 0; i < 4; i++) {
+		blockLocation[i].x = blocks[blockType - 1][i] / 2;
+		blockLocation[i].y = blocks[blockType - 1][i] % 2;
+	}
+	img = imgs[blockType - 1];
 }
+
+Block::~Block()
+{
+
+}
+
+
+//用左上角坐标绘制方块
+void Block::draw(int leftTop_x, int leftTop_y)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		int real_x = leftTop_x + blockLocation[i].x * block_width;
+		int real_y = leftTop_y + blockLocation[i].y * block_height;
+		putimage(real_x, real_y, img);	//之前按照单元格格式来裁剪，不需要重新裁剪
+	}
+}
+
+int Block::getBlockType()
+{
+	return blockType;
+}
+
+IMAGE* Block::getImages()
+{
+	return img;
+}
+
